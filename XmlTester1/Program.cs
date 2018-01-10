@@ -65,7 +65,16 @@ namespace XmlTester1
 
         public static void Post()
         {
-            string xml = "<CustomField><Field name = \"Credits\"> Editor, Chris Wyatt; music, Mic</Field><Field name = \"Participants\"> Narrator, Anthony Hopkins.</Field><Field name = \"Organization: Creator\">[presented by] Cooln </Field ></CustomField>";
+            //string xml = "<CustomField><Field name = \"Credits\"> Editor, Chris Wyatt; music, Mic</Field><Field name = \"Participants\"> Narrator, Anthony Hopkins.</Field><Field name = \"Organization: Creator\">[presented by] Cooln </Field ></CustomField>";
+
+
+            //var data = new CustomField { Fields = Field
+
+            CustomField cf = new CustomField
+            {
+                Fields = new List<Field>()
+            };
+
 
             Field field1 = new Field
             {
@@ -73,15 +82,28 @@ namespace XmlTester1
                 FieldText = "Oregon Trail"
             };
 
+            Field field2 = new Field
+            {
+                Name = "Location",
+                FieldText = "None of your bizzzzz"
+            };
+
+            
+
+
+            cf.Fields.Add(field1);
+
+            // var newElement = new XmlAttribute("Field", field1.FieldText);
             //add to existing class THEN serialize it and update the db repository, but involves... too much back and forth, rethink
 
-            var item = SerializeObject(field1);
+            var item = SerializeObject(cf);
 
             //var newElement = new Field();
             //newElement.Name = 
 
             Console.WriteLine("=========Xml========");
             Console.WriteLine(item);
+            Console.WriteLine(" ");
         }
 
         private static string SerializeObject<T>(T field)
