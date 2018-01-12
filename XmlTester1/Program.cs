@@ -14,37 +14,10 @@ namespace XmlTester1
     {
         public static void Main(string[] args)
         {
-            GetByTitleKey();
+            Deserialize();
 
             Post();
 
-        }
-
-        public static CustomField GetByTitleKey()
-        {
-            string xml = "<CustomField><Field name = \"Credits\"> Editor, Chris Wyatt; music, Mic</Field><Field name = \"Participants\"> Narrator, Anthony Hopkins.</Field><Field name = \"Organization: Creator\">[presented by] Cooln </Field ></CustomField>";
-
-            var item = DeserializeObject<CustomField>(xml);
-            
-
-            foreach(var prop in item.Fields)
-            {
-                Console.WriteLine("=========NAME========");
-                Console.WriteLine(prop.Name);
-                Console.WriteLine("=========FIELD TEXT========");
-                Console.WriteLine(prop.FieldText);
-            }
-            
-            return item;
-        }
-
-        private static T DeserializeObject<T>(string xml)
-        {
-            var serializer = new XmlSerializer(typeof(T));
-            using (var tr = new StringReader(xml))
-            {
-                return (T)serializer.Deserialize(tr);
-            }
         }
 
         [XmlRoot("CustomField")]
@@ -63,13 +36,33 @@ namespace XmlTester1
             public string FieldText { get; set; }
         }
 
+        public static CustomField Deserialize()
+        {
+            string xml = "<CustomField><Field name = \"Credits\"> Editor, Chris Wyatt; music, Mic</Field><Field name = \"Participants\"> Narrator, Anthony Hopkins.</Field><Field name = \"Organization: Creator\">[presented by] Cooln </Field ></CustomField>";
+
+            var item = DeserializeObject<CustomField>(xml);
+
+            foreach(var prop in item.Fields)
+            {
+                Console.WriteLine("===========NAME============ \n" + prop.Name);
+                Console.WriteLine("=========FIELD TEXT======== \n" + prop.FieldText);
+            }
+            
+            return item;
+        }
+
+        private static T DeserializeObject<T>(string xml)
+        {
+            var serializer = new XmlSerializer(typeof(T));
+            using (var tr = new StringReader(xml))
+            {
+                return (T)serializer.Deserialize(tr);
+            }
+        }
+
+        // Serializing
         public static void Post()
         {
-            //string xml = "<CustomField><Field name = \"Credits\"> Editor, Chris Wyatt; music, Mic</Field><Field name = \"Participants\"> Narrator, Anthony Hopkins.</Field><Field name = \"Organization: Creator\">[presented by] Cooln </Field ></CustomField>";
-
-
-            //var data = new CustomField { Fields = Field
-
             CustomField cf = new CustomField
             {
                 Fields = new List<Field>()
@@ -85,25 +78,16 @@ namespace XmlTester1
             Field field2 = new Field
             {
                 Name = "Location",
-                FieldText = "None of your bizzzzz"
+                FieldText = "None of your biz"
             };
-
-            
-
 
             cf.Fields.Add(field1);
 
-            // var newElement = new XmlAttribute("Field", field1.FieldText);
-            //add to existing class THEN serialize it and update the db repository, but involves... too much back and forth, rethink
-
             var item = SerializeObject(cf);
 
-            //var newElement = new Field();
-            //newElement.Name = 
-
-            Console.WriteLine("=========Xml========");
-            Console.WriteLine(item);
-            Console.WriteLine(" ");
+            Console.ReadLine();
+            Console.WriteLine("===========XML============ \n" + item);
+            Console.WriteLine();
         }
 
         private static string SerializeObject<T>(T field)
